@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Redirect external requests for .php files to extensionless URLs (excluding POST requests)
+RewriteCond %{REQUEST_METHOD} !POST
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[?\s] [NC]
+RewriteRule ^ /%1 [R=302,L]
+
+# Check if the requested URI (with .php appended) is a valid file
+# and rewrite it internally if the original URI isn't a directory
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
